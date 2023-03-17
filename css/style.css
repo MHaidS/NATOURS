@@ -7,8 +7,6 @@ Dark green: #28b485
 
 */
 
-/* 6. Building the Header - Part 1 */
-/* 6.1. do a simple reset */
 * {
   margin: 0;
   padding: 0;
@@ -25,7 +23,7 @@ body {
 }
 
 .header {
-  /* 6.3. 95vh ===> at every pt. the ht. of the element shd. be 95% of the viewport ht. */
+
   height: 95vh;
   background-image: linear-gradient(
       to right bottom,
@@ -35,6 +33,214 @@ body {
     url(../img/hero.jpg);
   background-size: cover;
   background-position: top;
+  /* 7.2. Since the parent of .logo-box is .header, set its position to relative; this is the reference fr w/c top & left (in .logo-box) start to count
+  
+  relative ===> The element is positioned according to the normal flow of the document, and then offset relative to itself based on the values of top, right, bottom, and left.
+  */
+  position: relative;
 
   clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%);
+}
+
+/* 7. Building the Header - Part 2 */
+.logo-box {
+  /* 7.1. absolute ===> The element is removed from the normal document flow, and no space is created for the element in the page layout. It is positioned relative to its closest positioned ancestor, if any; otherwise, it is placed relative to the initial containing block. Its final position is determined by the values of top, right, bottom, and left. */
+  position: absolute;
+  top: 40px;
+  left: 40px;
+}
+
+.logo {
+  /* 7.3. it is preferable to ctrl the heights of the elements */
+  height: 35px;
+}
+
+/* .logo:hover { */
+/* 8.9. we can also use ann animation multiple times or when we hover over an element */
+/* animation: moveInRight 1s ease-out;
+} */
+
+.text-box {
+  position: absolute;
+  /* 7.6. top & left is in relation to the parent element .header */
+  top: 40%;
+  left: 50%;
+  /* background-color: red; */
+  /* 7.5. after setting the top & left, we want it to shift 50% of the width back to the left & back up; 'translate' is in relation to the element itself; this makes it possible for the element to be exactly in the center */
+  transform: translate(-50%, -50%);
+  /* 9.2. to center the text inside of a box  */
+  text-align: center;
+}
+
+.heading-primary {
+  color: #fff;
+  text-transform: uppercase;
+
+  /* 8.8. this entire element is what moves in the animation, so it's a bit shaky; 'backface-visibility' determines if the back part of an element when it is being transformed is 'visible' or 'hidden' to the user; this property is also a hack to fix the shaking in an animation */
+  backface-visibility: hidden;
+  /* 9.3. add some whitespace bet. the heading & the btn */
+  margin-bottom: 60px;
+}
+
+/* 7.4. span element is by default an inline element like text, so display it as a 'block'; a 'block' occupies 100% of the width */
+.heading-primary-main {
+  display: block;
+  font-size: 60px;
+  font-weight: 400;
+  letter-spacing: 35px;
+  /* 8.5. apply the animation: for the animation to work, we have to specify the 'animation-name' & 'animation-duration' */
+  animation-name: moveInLeft;
+  animation-duration: 1s;
+  /* 8.7. this defines how the animation will proceed, that is, how fast or how slow it will progress through the duration of a cycle */
+  animation-timing-function: ease-out;
+  /* 8.6. before the animation starts to play, it will 1st wait 3s */
+  /* animation-delay: 3s; */
+  /* animation-iteration-count: 3s; */
+}
+.heading-primary-sub {
+  display: block;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 17.4px;
+
+  /* animation-name: moveInRight;
+  animation-duration: 1s;
+  animation-timing-function: ease-out; */
+  animation: moveInRight 1s ease-out;
+}
+
+/* 8. Creating Cool CSS Animations */
+/* 8.1. for browser performance, it's best to animate 2 properties only, in this case, it's opacity & transform */
+@keyframes moveInLeft {
+  /* 8.2. animation initial state */
+  0% {
+    opacity: 0;
+    /* 8.4. use translateX() if you want to animate in the x-axis, left to right */
+    transform: translateX(-100px);
+    /* transform: translateX(-100px) rotate(-50deg); */
+  }
+
+  /* 60% {
+    transform: rotate(180deg);
+  } */
+
+  80% {
+    transform: translateX(10px);
+  }
+  /* 8.3. animation final state */
+  100% {
+    opacity: 1;
+    transform: translate(0);
+  }
+}
+
+@keyframes moveInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+
+  80% {
+    transform: translateX(-10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(0);
+  }
+}
+
+/* 10.11. code another animation for '.btn:hover::after' only; a new class will have to be created  */
+@keyframes moveInBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(0);
+  }
+}
+
+/* 9. Bldg. a Complex Animated Button - Part 1 */
+/* 9.1. a 'pseudo-class' specifies a special state of the selected element(s) */
+.btn:link,
+.btn:visited {
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 15px 40px;
+  /* 9.2. we shd always set display to 'inline-block' if we want to set some paddings, width or height to an inline element; An inline-block element works like an inline element, but our padding works all-around and so does height + width. */
+  display: inline-block;
+  /* 9.6. add the rounded corners, animation & shadows */
+  /* 2 types of animation
+    1) the transition property
+    2) @keyframes
+  */
+  border-radius: 100px;
+  /* 9.7. 'all' the properties are enabled to be animated */
+  transition: all 0.2s;
+  /* 10.4 set the position to relative */
+  position: relative;
+}
+
+/* 9.4. take care of the btn's hover & active states */
+.btn:hover {
+  transform: translateY(-3px);
+  /* 9.8. add the box shadow when we do the hover; set the 1st value to '0' since we only want the shadow on the y-axis (10px), for the blur (20px), then the 4th value is for the color of the shadow */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+  /* 9.5. the '-1px' is in relation to the initial state .btn:link */
+  transform: translateY(-1px);
+  /* 9.9. when you click on a btn, you want to give the impression that you are pressing on it */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-white {
+  background-color: #fff;
+  color: #777;
+}
+
+/* 10. Bldg. a Complex Animated Button - Part 2 */
+/* 10.1. pseudo elements allow us to style certain parts of an element; for ex., the '::after' creates a pseudo-element that is the last child of the selected element. It is often used to add cosmetic content to an element with the content property; the trick here is to add an element that looks exactly like the btn that we already have but we put it behind the btn; when we hover out of the btn, then this hidden pseudo element goes back behind the btn; this works the '::after' pseudo element is treated like a child of the btn; if we want the height on this to be 100%, that is 100% of the width of the btn */
+.btn::after {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  border-radius: 100px;
+  /* 10.3 now we must put this behind the btn by setting position to absolute; the reference is the 1st element w/ the relative position that it can find; we want it to be hidden behind the btn so the ref would be .btn:link */
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* 10.5 'z-index' defines the position of the element, -1 if it's behind the btn; we want to see it when it's behind the btn  */
+  z-index: -1;
+  /* 10.10. the initial state of '.btn:hover::after' */
+  transition: all 0.4s;
+}
+
+/* 10.2. if we want the color to be white, we have to make another pseudo element, but this time for the 'btn-white'; the orig btn is still on top of the pseudo element bec we can still see the text */
+.btn-white::after {
+  /* 10.8. change the bg-color to test it out */
+  background-color: #fff;
+  /* background-color: red; */
+}
+
+/* 10.6 when we hover the btn, then we want certain styles to apply on the '::after' pseudo element; an element is ::after pseudo element when the btn is in hover state; we want the element to grow & to fade out; the pseudo element becomes visible when we hover on the btn */
+.btn:hover::after {
+  /* 10.7 'scale' increases the size of the element */
+  /* transform: scale(1.5); */
+  transform: scaleX(1.4) scaleY(1.6)
+  /* 10.9. we also want to animate this pseudo element, so we put the transition property on the initial state, in this case, it would be '.btn::after' */
+  /* 10.11 set opacity to '0' since we also want it to fade out */
+  opacity: 0;
+}
+
+/* 10.13. create the animation in this class; animation-name, animation-duration, animation-timing-function, '.75s' is for the delay */
+.btn-animated {
+  animation: moveInBottom 0.5s ease-out .75s;
+  /* 10.14. will automatically apply the styles of the 0% of 'moveInBottom' before the animation starts */
+  animation-fill-mode: backwards;
 }
